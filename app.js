@@ -74,7 +74,7 @@ setInterval(function(){
 // Creates a new author
 const newPad = () => {
   const testUrl = host+"/p/memory_leak_test_"+randomPadName();
-  var pad = etherpad.connect();
+  var pad = etherpad.connect(testUrl);
   pad.on("socket_timeout", function(){
     console.error("socket timeout connecting to pad");
     process.exit(1);
