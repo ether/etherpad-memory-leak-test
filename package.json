@@ -1,0 +1,28 @@
+{
+  "name": "etherpad-memory-leak-test",
+  "description": "Client to Leak Test an Etherpad Instance",
+  "version": "0.0.1",
+  "author": {
+    "name": "John McLear",
+    "email": "john@mclear.co.uk",
+    "url": "http://mclear.co.uk"
+  },
+  "contributors": [],
+  "dependencies": {
+    "argv": "*",
+    "async": "*",
+    "etherpad-cli-client": "*",
+    "measured": "*",
+    "request": "^2.88.2"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ether/etherpad-memory-leak-test.git"
+  },
+  "bin": {
+    "etherpad-memory-leak-test": "app.js"
+  }
+}
