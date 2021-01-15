@@ -32,6 +32,7 @@ if(args.options.duration){
 }
 
 request(`${host}/stats/`, function (error, response, body) {
+  if(error) throw new Error('Unable to connect to Etherpad');
   initialMemory = JSON.parse(body).memoryUsage;
 })
 
@@ -90,12 +91,14 @@ const newPad = () => {
     catch(e){
       stats.meter('error').mark();
       console.error("Error!");
+      pad.close();
     }
   });
   pad.on("message", function(msg){
     if(msg.type !== "COLLABROOM") return;
     if(msg.data.type === "ACCEPT_COMMIT"){
       stats.meter('acceptedCommit').mark();
+      pad.close();
     }
   });
 }
