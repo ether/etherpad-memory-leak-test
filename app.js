@@ -65,7 +65,7 @@ setInterval(function(){
       request(`${host}/stats/`, function (error, response, body) {
         const memory = JSON.parse(body).memoryUsage;
         finalMemory = memory;
-        console.log(`Pad Count: ${stats.toJSON().acceptedCommit.count} --- Memory Usage: ${memory}`);
+        console.log(`Pad Count: ${stats.toJSON().acceptedCommit.count} --- Memory Usage: ${memory / 100000} Mb`);
       })
     }
   }
