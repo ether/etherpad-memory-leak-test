@@ -33,7 +33,7 @@ if(args.options.duration){
 
 request(`${host}/stats/`, function (error, response, body) {
   if(error) throw new Error('Unable to connect to Etherpad');
-  initialMemory = JSON.parse(body).memoryUsage;
+  initialMemory = JSON.parse(body).memoryUsageHeap;
 })
 
 let ending = false;
@@ -47,7 +47,7 @@ setInterval(function(){
       console.log("Waiting 10 minutes to see memory begins to free up");
       setTimeout(function(){
         request(`${host}/stats/`, function (error, response, body) {
-          const afterTimeMemory = JSON.parse(body).memoryUsage;
+          const afterTimeMemory = JSON.parse(body).memoryUsageHeap;
           if(afterTimeMemory <= initialMemory) {
             console.log("Memory was released, no leak present.");
             process.exit(0);
@@ -64,7 +64,7 @@ setInterval(function(){
     newPad();
     if (stats.toJSON().acceptedCommit) {
       request(`${host}/stats/`, function (error, response, body) {
-        const memory = JSON.parse(body).memoryUsage;
+        const memory = JSON.parse(body).memoryUsageHeap;
         finalMemory = memory;
         console.log(`Pad Count: ${stats.toJSON().acceptedCommit.count} --- Memory Usage: ${memory / (1024*1024)} Mb`);
       })
