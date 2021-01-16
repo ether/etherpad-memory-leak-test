@@ -43,7 +43,7 @@ setInterval(function(){
   if(currentTime > endTime){
     if (!ending) {
       console.log("Test duration complete");
-      console.log(`Opening ${stats.toJSON().acceptedCommit.count} pads consumed ${(finalMemory - initialMemory) /100000} Mb memory`);
+      console.log(`Opening ${stats.toJSON().acceptedCommit.count} pads consumed ${(finalMemory - initialMemory) /(1024*1024)} Mb memory`);
       console.log("Waiting 10 minutes to see memory begins to free up");
       setTimeout(function(){
         request(`${host}/stats/`, function (error, response, body) {
@@ -52,7 +52,7 @@ setInterval(function(){
             console.log("Memory was released, no leak present.");
             process.exit(0);
           } else {
-            console.log(`Memory was not released.  Leak present.  ${(afterTimeMemory - initialMemory) /100000} Mb memory was horded`);
+            console.log(`Memory was not released.  Leak present.  ${(afterTimeMemory - initialMemory) /(1024*1024)} Mb memory was horded`);
             process.exit(1);
           }
         })
@@ -66,7 +66,7 @@ setInterval(function(){
       request(`${host}/stats/`, function (error, response, body) {
         const memory = JSON.parse(body).memoryUsage;
         finalMemory = memory;
-        console.log(`Pad Count: ${stats.toJSON().acceptedCommit.count} --- Memory Usage: ${memory / 100000} Mb`);
+        console.log(`Pad Count: ${stats.toJSON().acceptedCommit.count} --- Memory Usage: ${memory / (1024*1024)} Mb`);
       })
     }
   }
@@ -91,14 +91,12 @@ const newPad = () => {
     catch(e){
       stats.meter('error').mark();
       console.error("Error!");
-      pad.close();
     }
   });
   pad.on("message", function(msg){
     if(msg.type !== "COLLABROOM") return;
     if(msg.data.type === "ACCEPT_COMMIT"){
       stats.meter('acceptedCommit').mark();
-      pad.close();
     }
   });
 }
